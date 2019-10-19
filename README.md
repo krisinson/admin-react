@@ -2,12 +2,12 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-10-19 13:54:38
- * @LastEditTime: 2019-10-19 13:54:38
- * @LastEditors: your name
+ * @LastEditTime: 2019-10-19 16:07:45
+ * @LastEditors: Please set LastEditors
  -->
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## 笔记 Scripts
 
 In the project directory, you can run:
 
