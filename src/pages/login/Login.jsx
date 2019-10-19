@@ -21,19 +21,19 @@ export default class Login extends Component {
                         <Form.Item>
                             <Input
                                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                placeholder="Username"
+                                placeholder="用户名"
                             />
                         </Form.Item>
                         <Form.Item>
                             <Input
                                 prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 type="password"
-                                placeholder="Password"
+                                placeholder="密码"
                             />
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit" className="login-form-button">
-                                Log in
+                                登录
                         </Button>
                         </Form.Item>
                     </Form>
@@ -43,5 +43,12 @@ export default class Login extends Component {
     }
 }
 
-
+// const LoginWrap = Form.create()(Login)
+// export default LoginWrap
+// /** 
+//  * 1.高阶函数
+//  * 2.高阶组件
+//  * Form.create()(包含<Form></Form>组件),返回一个新组件
+//  * 
+// */
 
