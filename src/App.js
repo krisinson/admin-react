@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-10-19 13:54:38
- * @LastEditTime: 2019-10-19 14:17:32
+ * @LastEditTime: 2019-10-19 18:53:15
  * @LastEditors: Please set LastEditors
  */
 import React,{Component} from 'react';
@@ -15,7 +15,7 @@ export default class App extends Component{
       <HashRouter>
         <Switch>
           <Route path="/login" component={Login}></Route>
-          <Route path="/" component={Admin}></Route>
+          <Route path="/admin" component={Admin}></Route>
         </Switch>
       </HashRouter>
     )
