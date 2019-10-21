@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 UI组件:不做任何redux相关语法 
  */
 export default class Counter extends Component {
-    static PropTypes = {
+    static propTypes = {
         count: PropTypes.number.isRequired, //用于显示一般属性
         increment: PropTypes.func.isRequired, //用于更新数据的一般属性
         decrement: PropTypes.func.isRequired,
@@ -39,6 +39,7 @@ export default class Counter extends Component {
         this.props.incrementAsync(number, 1000)
     }
     render() {
+        const count = this.props.count
         return (
             <div>
                 <p>click {count} times</p>
