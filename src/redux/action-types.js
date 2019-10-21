@@ -1,13 +1,14 @@
 /*
  * @Description: In User Settings Edit
  * @Author: your name
- * @Date: 2019-10-21 16:27:38
- * @LastEditTime: 2019-10-21 18:42:34
+ * @Date: 2019-10-21 19:31:05
+ * @LastEditTime: 2019-10-21 20:18:49
  * @LastEditors: Please set LastEditors
  */
-// action 对象的type常量模块
-export const INCREMENT='increment'
-export const DECREMENT = 'decrement'
+/* 
+包含多个action对象的type名称常量的模块
+ */
+export const INCREMENT ='INCREMENT'
 
-export const ADDPRODUCT='addProduct'
-export const UPDATEPRODUCT ='updateProduct'
+export const DECREMENT ='DECREMENT'
+

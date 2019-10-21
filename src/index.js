@@ -2,17 +2,19 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-10-19 13:54:38
- * @LastEditTime: 2019-10-21 16:51:55
+ * @LastEditTime: 2019-10-21 20:32:23
  * @LastEditors: Please set LastEditors
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
+// import { Provider } from 'react-redux'
 
-import App from './containers/App'
+import App from './App'
 import store from './redux/store'
-ReactDOM.render((
-    <Provider store={store}>
-        <App />
-    </Provider>
-), document.getElementById('root'))
+
+ReactDOM.render(<App store={store}/>, document.getElementById('root'))
+
+// 给store绑定一个state数据改变的监听回调
+store.subscribe(() => {
+    ReactDOM.render(<App store={store}/>, document.getElementById('root'))
+})
