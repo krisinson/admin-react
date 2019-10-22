@@ -3,8 +3,8 @@
  */
 import React,{Component} from 'react';
 import {BrowserRouter,Switch,Route} from 'react-router-dom'
-import Login from './pages/login/Login'
-import Admin from './pages/admin/Admin'
+import Login from './containers/login/Login'
+import Admin from './containers/admin/Admin'
 export default class App extends Component{
   render(){
     return(

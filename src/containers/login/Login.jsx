@@ -1,18 +1,34 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button, Result } from 'antd';
+import { Form, Icon, Input, Button } from 'antd'
 // import qs from 'qs'
+import { connect } from 'react-redux'
+import {Redirect} from 'react-router-dom'
+
+import { loginAsync } from '../../redux/action-creators/user'
 import logo from './images/logo.png'
 import './login.less'
-import ajax from '../../api/ajax'
+// import ajax from '../../api/ajax'
+
+//  connect(
+//     state => ({hasLogin:state.user.hasLogin}), //用于显示一般属性
+//     { loginAsync } //用于更新状态的函数属性
+// )(Form.create()(Login))
+
+@connect(
+    state => ({hasLogin:state.user.hasLogin}), //用于显示一般属性
+    { loginAsync } //用于更新状态的函数属性
+)
+@Form.create() //Login=Form.create()(Login) 先执行
 
 
 class Login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields((err, username,Password) => {
             if (!err) {
-                console.log('发送ajax请求 ', values)
+                console.log('发送ajax请求 ', username,Password)
+                this.props.loginAsync(username,Password)
                 // 方式一
                 // ajax.post('/login',values)
                 // .then(({user,token})=>{
@@ -23,15 +39,16 @@ class Login extends Component {
                 // })
 
                 //方式二 
-                ajax.post('/login', values)
-                    .then((result) => {
-                        const { status, data: { user, token } = {}, msg } = result
-                        if (status === 0) {
-                            console.log('登录成功', user, token)
-                        } else {
-                            console.log('登录失败', msg)
-                        }
-                    })
+                // ajax.post('/login', values)
+                //     .then((result) => {
+                //         const { status, data: { user, token } = {}, msg } = result
+                //         if (status === 0) {
+                //             console.log('登录成功', user, token)
+                //         } else {
+                //             console.log('登录失败', msg)
+                //         }
+                //     })
+
             } else {
 
             }
@@ -59,7 +76,12 @@ class Login extends Component {
     render() {
 
         const { getFieldDecorator } = this.props.form
-
+        const {hasLogin}=this.props
+        if(hasLogin){ //如果已经登录自定跳转到admin界面
+            //编程路由
+            //this.props.history.replace('/admin') //用于事件回调
+            return <Redirect to='/admin'/> //render中使用
+        }
         return (
             <div className="login">
                 <header className="login-header">
@@ -119,6 +141,12 @@ class Login extends Component {
     }
 }
 
-const WrapperForm = Form.create()(Login)
 
-export default WrapperForm
+// export default connect(
+//     state => ({hasLogin:state.user.hasLogin}), //用于显示一般属性
+//     { loginAsync } //用于更新状态的函数属性
+// )(Form.create()(Login))
+
+export default Login
+
+// const LoginWrap =Form.create()(Login)

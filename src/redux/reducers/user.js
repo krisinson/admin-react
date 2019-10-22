@@ -1,20 +1,30 @@
-/*
- * @Author: your name
- * @Date: 2019-10-22 09:15:00
- * @LastEditTime: 2019-10-22 09:16:24
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: /d:\DQY\1019 react 项目\react-client\src\redux\reducers\user.js
- */
+
 /* 管理登录用户数据的reducer函数 */
 
+import { SAVE_USER_TOKEN ,REMOVE_USER_TOKEN} from '../action-types'
 
-const initUser={}
-export default function user(state=initUser,action){
+const _user=JSON.parse(localStorage.getItem('user_key') || '{}')
+const _token=localStorage.getItem('token_key')
+const initUser = { //初始值从local中读取
+    user:_user,
+    token:_token,
+    hasLogin:_token&&_user._id //是否已经登录
+}
+export default function user(state = initUser, action) {
     switch (action.type) {
-            
-           
-    
+        case SAVE_USER_TOKEN:
+            const {user,token}=action.data
+            return {
+                user,
+                token,
+                hasLogin:true
+            }
+            case REMOVE_USER_TOKEN:
+            return {
+                user:{},
+                token:'',
+                hasLogin:false
+            }
         default:
             return state
     }
