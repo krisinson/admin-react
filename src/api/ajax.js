@@ -9,6 +9,10 @@ import qs from 'qs'
 import { message } from 'antd'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+
+import store from '../redux/store'
+import history from '../history'
+import { removeUserToken } from '../redux/action-creators/user'
 // 创建一个instance
 
 const instance = axios.create({
@@ -27,6 +31,12 @@ instance.interceptors.request.use(config => { //url method data params
         config.data = qs.stringify(data)
     }
 
+    // 如果有token 添加到请求头中:Authorization
+    const token = store.getState().user.token
+    if (token) {
+        // config当前请求的配置
+        config.headers['Authorization'] = 'atguigu_' + token
+    }
     return config //必须返回config
 })
 
@@ -52,7 +62,23 @@ instance.interceptors.response.use(
         NProgress.done()
         // 统一处理请求异常
         // 显示请求错误的提示
-        message.error('请求出错:' + error.message)
+
+        const { status, data: { msg } = {} } = error.response
+        // 如果请求为401 token在后台中的状态是未携带或者已经过期
+        if(status===401){
+            // 如果当前没有登录界面(当前路由路径不是/login)
+            if(history.location.pathname!=='/login'){
+                // 显示提示
+                message.error(msg)
+                // 删除用户信息 自动跳转到登录界面
+                store.dispatch(removeUserToken())
+            }
+        }else if(status===404){
+            message.error('请求资源不存在')
+        }else{
+            message.error('请求出错了'+error.message)
+        }
+
         // 中断promise链 外部不需要再处理请求出错的情况
         return new Promise(() => { })
     }

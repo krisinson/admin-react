@@ -12,3 +12,13 @@ export const reqLogin = ({ username, password }) => ajax({
     data: { username, password }
 })
 
+// 获取用户列表
+
+export const reqUsers=()=> ajax({
+    url:'/manage/user/list',
+    method:'GET'
+})
+
+// 另外两种写法
+// ajax('/manage/user/list')
+// ajax.get('/manage/user/list')

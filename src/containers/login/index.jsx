@@ -2,33 +2,32 @@ import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd'
 // import qs from 'qs'
 import { connect } from 'react-redux'
-import {Redirect} from 'react-router-dom'
+// import {Redirect} from 'react-router-dom'
 
 import { loginAsync } from '../../redux/action-creators/user'
 import logo from './images/logo.png'
-import './login.less'
-// import ajax from '../../api/ajax'
-
+import './index.less'
+import withCheckLogin from "../with-check-login"
 //  connect(
 //     state => ({hasLogin:state.user.hasLogin}), //用于显示一般属性
 //     { loginAsync } //用于更新状态的函数属性
 // )(Form.create()(Login))
 
 @connect(
-    state => ({hasLogin:state.user.hasLogin}), //用于显示一般属性
+    state => ({}), //用于显示一般属性
     { loginAsync } //用于更新状态的函数属性
 )
 @Form.create() //Login=Form.create()(Login) 先执行
-
+@withCheckLogin
 
 class Login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, username,Password) => {
+        this.props.form.validateFields((err, username,password) => {
             if (!err) {
-                console.log('发送ajax请求 ', username,Password)
-                this.props.loginAsync(username,Password)
+                console.log('发送ajax请求 ', username)
+                this.props.loginAsync(username,password)
                 // 方式一
                 // ajax.post('/login',values)
                 // .then(({user,token})=>{
@@ -76,12 +75,12 @@ class Login extends Component {
     render() {
 
         const { getFieldDecorator } = this.props.form
-        const {hasLogin}=this.props
-        if(hasLogin){ //如果已经登录自定跳转到admin界面
-            //编程路由
-            //this.props.history.replace('/admin') //用于事件回调
-            return <Redirect to='/admin'/> //render中使用
-        }
+        // const {hasLogin}=this.props
+        // if(hasLogin){ //如果已经登录自定跳转到admin界面
+        //     //编程路由
+        //     //this.props.history.replace('/admin') //用于事件回调
+        //     return <Redirect to='/admin'/> //render中使用
+        // }
         return (
             <div className="login">
                 <header className="login-header">
