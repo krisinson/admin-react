@@ -1,6 +1,6 @@
 import React from 'react'
 import './index.less'
-function LinkButton(props){
+function LinkButton(props) {
     return <button className="link-button" {...props}></button>
 }
 

@@ -1,3 +1,17 @@
-.left-nav {
+.left-nav .left-nav-header {
+  height: 80px;
+  background-color: #0a4270;
   color: white;
+  display: flex;
+  align-items: center;
+}
+.left-nav img {
+  width: 40px ;
+  height: 40px;
+  margin: 0 15px;
+}
+.left-nav h1 {
+  color: white;
+  font-size: 20px;
+  margin-bottom: 0;
 }

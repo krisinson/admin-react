@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 // import {Redirect} from 'react-router-dom'
 
 import { loginAsync } from '../../redux/action-creators/user'
-import logo from './images/logo.png'
+import logo from '../../assets/images/logo.png'
 import './index.less'
 import withCheckLogin from "../with-check-login"
 //  connect(
