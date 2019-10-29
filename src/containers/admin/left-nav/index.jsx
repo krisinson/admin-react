@@ -56,7 +56,7 @@ class Leftnav extends Component {
         return menuList.reduce((pre, item) => {
             const path = this.props.location.pathname
             if (!item.children) {
-                if (item.key === path && this.props.headerTitle !== item.title) {
+                if (path.indexOf(item.key)===0 && this.props.headerTitle !== item.title) {
                     this.props.setHeaderTitle(item.title)
                 }
                 // 如果当前请求的就是item对应的路径 就将当前title保存在state中
@@ -64,7 +64,7 @@ class Leftnav extends Component {
                     <Item key={item.key}>
                         <Link to={item.key} onClick={
                             () => {
-                                if (item.key === path && this.props.headerTitle !== item.title) {
+                                if (path.indexOf(item.key)===0 && this.props.headerTitle !== item.title) {
                                     this.props.setHeaderTitle(item.title)
                                 }
                             }
@@ -78,7 +78,7 @@ class Leftnav extends Component {
                 // 判断item的children有没有一个child的key与path一致
                 // const result = item.children.find(item => item.key === path)
                 // const result = item.children.every(item => item.key === path) 不阔以
-                const result = item.children.some(item => item.key === path)
+                const result = item.children.some(item => path.indexOf(item.key)===0)
                 if (result) {
                     this.openKey = item.key
                 }
@@ -101,12 +101,17 @@ class Leftnav extends Component {
         }, [])
     }
     render() {
+        //eslint-disable-next-line 
         {/* 使用map方法 */ }
+        //eslint-disable-next-line 
         {/* {this.getMenuNodes(menuList)} */ }
+        //eslint-disable-next-line 
         {/* 使用reduce方法 */ }
         const menuNodes = this.getMenuNodes_reduce(menuList)
-
-        const selectedKey = this.props.location.pathname
+        let selectedKey = this.props.location.pathname
+        if(selectedKey.indexOf('/product/')===0){
+            selectedKey='/product'
+        }
         const openKey = this.openKey
         return (
             <div className="left-nav">

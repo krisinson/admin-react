@@ -7,15 +7,26 @@ import {
     Modal,
     message
 } from 'antd'
+
+import { connect } from 'react-redux'
+// import { reqCategories, reqAddCategory, reqUpdateCategory } from '../../api/index'
+import {
+    getCategorisAsync,
+    addCategoryAsync,
+    updateCategoriesAsync
+} from '../../redux/action-creators/categories'
+
 import LinkButton from "../../components/link-button";
-import { reqCategories, reqAddCategory, reqUpdateCategory } from '../../api/index'
 import AddUpdateForm from './add-update-form'
 
-
-export default class Category extends Component {
+@connect(
+    state => ({ categories: state.categories }),
+    { getCategorisAsync, addCategoryAsync, updateCategoriesAsync }
+)
+class Category extends Component {
 
     state = {
-        categories: [],
+        // categories: [],
         loading: false, //是否显示loading
         isAddVisible: false, //是否显示添加的对话框
         isUpdateVisible: false, //是否显示更新的对话框
@@ -41,19 +52,27 @@ export default class Category extends Component {
         this.setState({
             loading: true
         })
-        const result = await reqCategories()
-        //隐藏loading
+        const msg = await this.props.getCategorisAsync()
         this.setState({
             loading: false
         })
-        if (result.status === 0) {
-            const categories = result.data
-            this.setState({
-                categories
-            })
-        } else {
-            message.error(result.msg)
-        }
+        if (msg) { //获取数据成功
+           message.error(msg)
+        } 
+
+        // const result = await reqCategories()
+        // //隐藏loading
+        // this.setState({
+        //     loading: false
+        // })
+        // if (result.status === 0) {
+        //     const categories = result.data
+        //     this.setState({
+        //         categories
+        //     })
+        // } else {
+        //     message.error(result.msg)
+        // }
     }
     // 添加分类
     addCategory = () => {
@@ -62,23 +81,34 @@ export default class Category extends Component {
             if (!error) {
                 // 得到输入数据
                 const { categoryName } = values
-                // 发送添加分类的请求
-                const result = await reqAddCategory(categoryName)
-                this.form.resetFields() //重置输入数据(回到初始值)
-                if (result.status === 0) {
-                    //添加成功则更新列表显示
-                    const category = result.data
-                    const categories = this.state.categories
+                const msg =await this.props.addCategoryAsync(categoryName)
+                if(msg){
+                    // 添加失败 提示信息
+                    message.error(msg)
+                }else{
                     this.setState({
-                        categories: [category, ...categories],
-                        isAddVisible: false,
-                        loading: false,
+                        isAddVisible:false
                     })
+                    //添加失败 提示信息
                     message.success("添加分类成功")
-                } else {
-                    //添加失败则显示提示
-                    message.error(result.msg)
                 }
+            //     // 发送添加分类的请求
+            //     const result = await reqAddCategory(categoryName)
+            //     this.form.resetFields() //重置输入数据(回到初始值)
+            //     if (result.status === 0) {
+            //         //添加成功则更新列表显示
+            //         const category = result.data
+            //         const categories = this.state.categories
+            //         this.setState({
+            //             categories: [category, ...categories],
+            //             isAddVisible: false,
+            //             loading: false,
+            //         })
+            //         message.success("添加分类成功")
+            //     } else {
+            //         //添加失败则显示提示
+            //         message.error(result.msg)
+            //     }
             }
         })
     }
@@ -91,6 +121,52 @@ export default class Category extends Component {
         })
     }
 
+    
+    // 更新分类
+    updateCategory = () => {
+        //表单验证
+        this.form.validateFields(async (error, values) => {
+            if (!error) {
+                // 得到输入数据
+                const { categoryName } = values
+                const categoryId = this.category._id
+
+                const msg= await this.props.updateCategoriesAsync({categoryId,categoryName})
+                if(msg){
+                    // 更新失败 提示信息
+                    message.error(msg)
+                }else{
+                    this.setState({
+                        isUpdateVisible:false
+                    })
+                    //更新成功 提示信息
+                    message.success("更新分类成功")
+                }
+        //         // 发送添加分类的请求
+        //         const result = await reqUpdateCategory({ categoryId, categoryName })
+        //         this.form.resetFields() //重置输入数据(回到初始值)
+        //         if (result.status === 0) {
+        //             //添加成功则更新列表显示
+        //             const category = { _id: categoryId, name: categoryName }
+        //             const categories = this.state.categories
+        //             this.setState({
+        //                 categories: categories.map((item) => {
+        //                     if (item._id === category._id) {
+        //                         return category //产生一个新数组 用category替换item
+        //                     } else {
+        //                         return item
+        //                     }
+        //                 }),
+        //                 isAddVisible: false,
+        //             })
+        //             message.success("更新分类成功")
+        //         } else {
+        //             //添加失败则显示提示
+        //             message.error(result.msg)
+        //         }
+           }
+         })
+    }
     //显示更新界面
     updateVisible = (category) => {
         // 保存分类
@@ -100,43 +176,9 @@ export default class Category extends Component {
             isUpdateVisible: true,
         })
     }
-    // 更新分类
-    updateCategory = () => {
-        //表单验证
-        this.form.validateFields(async (error, values) => {
-            if (!error) {
-                // 得到输入数据
-                const { categoryName } = values
-                const categoryId = this.category._id
-                // 发送添加分类的请求
-                const result = await reqUpdateCategory({ categoryId, categoryName })
-                this.form.resetFields() //重置输入数据(回到初始值)
-                if (result.status === 0) {
-                    //添加成功则更新列表显示
-                    const category = { _id: categoryId, name: categoryName }
-                    const categories = this.state.categories
-                    this.setState({
-                        categories: categories.map((item) => {
-                            if (item._id === category._id) {
-                                return category //产生一个新数组 用category替换item
-                            } else {
-                                return item
-                            }
-                        }),
-                        isAddVisible: false,
-                    })
-                    message.success("更新分类成功")
-                } else {
-                    //添加失败则显示提示
-                    message.error(result.msg)
-                }
-            }
-        })
-    }
-
     // 隐藏更新分类界面
     hideUpdateCategory = () => {
-        this.category = null //删除之前添加的属性
+        // this.category = null //删除之前添加的属性
         // 重置输入
         this.form.resetFields()
         this.setState({
@@ -148,7 +190,8 @@ export default class Category extends Component {
         this.getCategories()
     }
     render() {
-        const { categories, loading, isAddVisible, isUpdateVisible } = this.state
+        const {  loading, isAddVisible, isUpdateVisible } = this.state
+        const {categories} =this.props
         const category = this.category || {}
         // 右上角界面
         const extra = (
@@ -188,3 +231,5 @@ export default class Category extends Component {
         )
     }
 }
+
+export default Category

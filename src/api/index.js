@@ -62,3 +62,60 @@ export const reqAddCategory = (categoryName) => ajax.post("/manage/category/add"
  */
 
 export const reqUpdateCategory = ({ categoryId, categoryName }) => ajax.post("/manage/category/update", { categoryId, categoryName })
+
+/* 获取商品分页列表 */
+export const reqProducts = (pageNum, pageSize) => ajax({
+    url: "/manage/product/list",
+    params: {
+        pageNum,
+        pageSize
+    }
+})
+
+/* 搜索获取商品分页列表 */
+export const reqSearchProducts = ({
+    pageNum,
+    pageSize,
+    searchType, //搜索类型名 "productName" / "productDesc"
+    searchName //搜索关键字
+}) => ajax({
+    url: "/manage/product/search",
+    params: {
+        pageNum,
+        pageSize,
+        [searchType]: searchName //参数名不是其本身 而是其值
+    }
+})
+
+/*
+更新商品状态 
+ */
+export const reqUpdateProductStatus = (productId, status) => ajax({
+    url: "/manage/product/updateStatus",
+    method: 'POST',
+    data: {
+        productId,
+        status
+    }
+})
+
+/* 根据商品id获取商品 */
+export const reqProductById = (productId) => ajax({
+    url: '/manage/product/info',
+    params: { productId }
+})
+
+/* 根据分类id获取分类 */
+
+export const reqCategory = (id) => ajax({
+    url: "/manage/category/info",
+    params: {
+        categoryId: id
+    }
+})
+
+/* 添加或更新商品 */
+export const reqAddUpdateProduct = (product) => ajax.post(
+    '/manage/product/'+ (product._id ? "update" : "add"),
+    product
+)

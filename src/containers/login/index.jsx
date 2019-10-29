@@ -105,8 +105,9 @@ class Login extends Component {
                                         { pattern: /^[a-zA-Z0-9_]+$/, message: "用户名必须小于等于12位" }
                                     ]
                                 })
-                                    (
-                                        <Input
+                                // eslint-disable-next-line  
+                                (
+                                    <Input
                                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                             placeholder="用户名"
                                         />
@@ -121,7 +122,8 @@ class Login extends Component {
                                         { validator: this.validatorPwd }
                                     ]
                                 })
-                                    (
+                                //eslint-disable-next-line
+                                (
                                         <Input
                                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                             type="password"
